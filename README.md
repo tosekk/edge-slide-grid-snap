@@ -4,10 +4,9 @@ Edge slide, but it snaps vertices to the world grid while you drag. Native edge 
 Packaged as a Blender extension (Blender 4.2+), tested on Blender 5.1.
 
 ## Install
-1. Clone the repo and build the zip with `blender --command extension build`
-2. Go to **Releases** and download the latest version from there
-3. In Blender: **Edit > Preferences > Get Extensions > dropdown arrow (top right) > Install from Disk...** and pick `edge_slide_grid_snap-<version>.zip`.
-4. Or drag and drop the zip into the Blender window.
+1. Grab the zip from the [releases page](https://github.com/tosekk/edge-slide-grid-snap/releases).
+2. In Blender: **Edit > Preferences > Get Extensions > dropdown arrow (top right) > Install from Disk...** and pick the zip.
+3. Or drag and drop the zip into the Blender window.
 
 ## Use
 1. In Edit Mode, select an edge loop (or any chain of edges).

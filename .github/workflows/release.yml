@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag matches manifest version
+        run: |
+          MANIFEST_VERSION=$(grep -m1 '^version' edge_slide_grid_snap/blender_manifest.toml | sed -E 's/version = "(.*)"/\1/')
+          TAG_VERSION=${GITHUB_REF_NAME#v}
+          if [ "$MANIFEST_VERSION" != "$TAG_VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME doesn't match blender_manifest.toml version $MANIFEST_VERSION"
+            exit 1
+          fi
+
+      - name: Cache Blender
+        id: cache-blender
+        uses: actions/cache@v4
+        with:
+          path: blender
+          key: blender-4.2.22-linux-x64
+
+      - name: Download Blender
+        if: steps.cache-blender.outputs.cache-hit != 'true'
+        run: |
+          curl -L -o blender.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.22-linux-x64.tar.xz
+          mkdir -p blender
+          tar -xf blender.tar.xz -C blender --strip-components=1
+
+      - name: Validate and build extension
+        run: |
+          ./blender/blender --command extension validate edge_slide_grid_snap
+          ./blender/blender --command extension build --source-dir edge_slide_grid_snap --output-dir dist
+
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip --title "$GITHUB_REF_NAME" --generate-notes
