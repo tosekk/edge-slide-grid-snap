@@ -1,0 +1,14 @@
+schema_version = "1.0.0"
+
+id = "edge_slide_grid_snap"
+version = "1.1.0"
+name = "Edge Slide Grid Snap"
+tagline = "Edge slide that snaps the sliding vertices to the world grid"
+maintainer = "Zhandos Kadyrkulov <zhandoskadyrkulov@gmail.com>"
+type = "add-on"
+
+tags = ["Mesh", "Modeling"]
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
